@@ -20,3 +20,8 @@ for imgBlob in imgBlobs:
     extracted_text += text
 
 print(extracted_text)
+
+f = open("extracted_text.txt", "w")
+f.write(extracted_text.encode("utf-8"))
+print("Done!")
+f.close()
