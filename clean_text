@@ -1,0 +1,43 @@
+def convert_txt_to_clean():
+    fr = open('extracted_text.txt')
+    full_text = ''
+    for line in fr:
+        if line == '\n':
+            full_text += line + '\n'
+            continue
+        line = line.replace('\n','')
+        line = re.sub(r"[^a-zA-Z0-9'\".,!-]+", ' ', line)
+        if len(line) > 3:
+            full_text += line+' '
+    # print full_text
+    fr.close()
+    fw = open('clean.txt', 'w') # final text final is stored as filename_clean.txt
+    fw.write(full_text.replace('Fig.', 'Figure'))
+    fw.close()
+    print "conversion from TXT to Clean TXT done!\n"
+
+convert_txt_to_clean()
+
+def format_text(string): #break in to lines to fit the screen
+    words=string.split()
+    output=''
+    buffer_string=''
+    for w in words:
+        if(len(buffer_string)<50):
+            buffer_string+=w+' '
+        else:
+            output+=buffer_string+'\n'
+            buffer_string=w+' '
+    output+=buffer_string   
+    return output
+
+def clean_txt_to_clean_words(doc):
+    global scrabble_list
+    doc = doc.replace(',', ' ')
+    propernouns = doc.lower().split()
+    propernouns_clean = [word for word in propernouns if (word not in scrabble_list)]
+    propernouns_string = ' '.join(propernouns_clean)
+    stop_free = " ".join([i for i in propernouns_string.split() if i not in stop])
+    normalized = " ".join(lemma.lemmatize(word) for word in stop_free.split())
+    return normalized
+
