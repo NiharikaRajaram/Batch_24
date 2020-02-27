@@ -1,0 +1,51 @@
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
+
+def get_topics_from_text1(line):
+    doc_complete = line.split('.')
+    doc_clean = [clean_txt_to_clean_words(doc).split() for doc in doc_complete]# ignore if length of docs for topic analysis is less than 3        
+    doc_clean_empty = True
+    doc_total_list = []
+    all_topics = []
+    for doc in doc_clean:
+        if len(doc) > 0:
+            doc_clean_empty = False
+    if len(doc_clean) >=1 and doc_clean_empty == False:
+        for doc in doc_clean:
+            doc_total_list = doc_total_list + doc
+
+    #print " important word list: ", doc_total_list
+    for i in range(0,len(doc_total_list),2):
+        if i+2<len(doc_total_list):
+            if (str(doc_total_list[i]) == str(doc_total_list[i+1])) and (str(doc_total_list[i+2]) == str(doc_total_list[i+1])) :
+                topic_name = (doc_total_list[i+2])            
+            elif str(doc_total_list[i]) == str(doc_total_list[i+1]):
+                topic_name = (' '.join([doc_total_list[i],doc_total_list[i+2]]))
+            elif str(doc_total_list[i+1]) == str(doc_total_list[i+2]):
+                topic_name = (' '.join([doc_total_list[i],doc_total_list[i+1]]))
+            elif str(doc_total_list[i]) == str(doc_total_list[i+2]):
+                topic_name = (' '.join([doc_total_list[i],doc_total_list[i+1]]))
+            else:
+                topic_name = (' '.join([doc_total_list[i],doc_total_list[i+1],doc_total_list[i+2]]))
+            add = False
+            for ch in topic_name:# ignore numerical topics
+                if ch in r"[abcdefghijklmnopqrstuvwxyz]":
+                    add = True
+            if add:
+                if topic_name not in all_topics:
+                    all_topics.append(str(topic_name))
+
+        elif i+1<len(doc_total_list):
+            if str(doc_total_list[i]) == str(doc_total_list[i+1]):
+                topic_name = (doc_total_list[i])
+            else:
+                topic_name = (' '.join([doc_total_list[i],doc_total_list[i+1]]))
+            add = False
+            for ch in topic_name:# ignore numerical topics
+                if ch in r"[abcdefghijklmnopqrstuvwxyz]":
+                    add = True
+            if add:
+                if topic_name not in all_topics:
+                    all_topics.append(str(topic_name))
+
+    return all_topics
