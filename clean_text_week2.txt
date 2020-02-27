@@ -1,3 +1,5 @@
+import re
+
 def convert_txt_to_clean():
     fr = open('extracted_text.txt')
     full_text = ''
