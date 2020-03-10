@@ -1,14 +1,11 @@
-import google_image_download as image_downloader
+import os
 import shutil
 from gtts import gTTS
 
 audio_dir = './audio/tmp'
-picture_dir = './picture/tmp'
 
 if os.path.exists(audio_dir):
     shutil.rmtree(audio_dir)
-if os.path.exists(picture_dir):
-    shutil.rmtree(picture_dir)
 
 fr = open('clean.txt')
 count_lines = 1
@@ -22,8 +19,6 @@ for line in fr:
 
     if not os.path.exists(audio_dir):
     	os.mkdir(audio_dir)
-    if not os.path.exists(picture_dir):
-    	os.mkdir(picture_dir)
       
     print "creating "+str(len(text_sentences))+" audio files "
     for i in range(0,len(text_sentences)):
