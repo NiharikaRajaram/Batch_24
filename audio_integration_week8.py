@@ -1,24 +1,12 @@
-fr = open('clean.txt')
-count_lines = 1
-for line in fr:
-    line = line.replace('\n','')
-    all_topics = get_topics_from_text1(line)
-    print '\n\n',line,'\n'
-    print "all topics ", all_topics, '\n\n'
+    text_clip_list = []
+    audio_clip_list = []
+    silence = mp.AudioFileClip('./audio/silence.mp3').subclip(0, 0.1)
+    audio_clip_list.append(silence)
+    for i in range(0, len(text_sentences)):
+        sent_audio_clip = mp.AudioFileClip(audio_dir + '/' + str(i) + '.mp3')
+        print("length of audio: " + str(i) + " = ", sent_audio_clip.duration)
+        audio_clip_list.append(sent_audio_clip)
+        sent_txt_clip = mp.TextClip(format_text(text_sentences[i]), font='Courier-Bold', fontsize=200, color='yellow', bg_color='black', stroke_width=30).set_pos('bottom').set_duration(sent_audio_clip.duration).resize(width=1000)
+        text_clip_list.append(sent_txt_clip)
 
-
-    text_sentences=[f for f in line.split('.') if len(f)>1]
-
-    if not os.path.exists(audio_dir):
-    	os.mkdir(audio_dir)
-    if not os.path.exists(picture_dir):
-    	os.mkdir(picture_dir)
-    if not os.path.exists(video_dir):
-    	os.mkdir(video_dir)
-
-    print "creating "+str(len(text_sentences))+" audio files "
-    for i in range(0,len(text_sentences)):
-    	tts = gTTS(text=text_sentences[i], lang='en', slow=False)
-    	tts.save(audio_dir+'/'+str(i)+'.mp3')
-        print '\n',text_sentences[i],'\n'
-        print "created "+ str(i)+ " audio file"
+    audio_clip = mp.concatenate_audioclips(audio_clip_list)
